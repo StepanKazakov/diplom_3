@@ -18,7 +18,7 @@ class BasePage:
 
     def click_element(self, locator):
         element = self.wait_for_clickable(locator)
-        element.click()
+        self.driver.execute_script("arguments[0].click();", element)
 
     def input_text(self, locator, text):
         element = self.wait_for_visibility(locator)
