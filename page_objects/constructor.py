@@ -16,8 +16,15 @@ class Constructor(BaseMethods):
     def check_presence_of_make_order_button(self):
         return self.wait_for_visibility((By.XPATH, make_order_btn))
 
-    def click_ingredient(self):
-        self.click_element((By.XPATH, ingredient_bun_1))
+    def click_main_ingredient(self, locator):
+        self.click_element((By.XPATH, filling_btn))
+        self.scroll_to_element((By.XPATH, locator))
+        self.click_element((By.XPATH, locator))
+
+    def click_sauce_ingredient(self, locator):
+        self.click_element((By.XPATH, sauce_btn))
+        self.scroll_to_element((By.XPATH, locator))
+        self.click_element((By.XPATH, locator))
 
     def get_ingredient_details(self):
         self.wait_for_visibility((By.XPATH, opened_modal))
@@ -36,8 +43,8 @@ class Constructor(BaseMethods):
         except TimeoutException:
             return False
 
-    def drag_and_drop_ingredient_to_burger(self):
-        source_element = self.wait_for_clickable((By.XPATH, ingredient_bun_1))
+    def drag_and_drop_ingredient_to_burger(self, locator):
+        source_element = self.wait_for_clickable((By.XPATH, locator))
         target_element = self.wait_for_visibility((By.XPATH, burger_target_locator))
         self.driver.execute_script("""
                     const source = arguments[0];
@@ -69,10 +76,12 @@ class Constructor(BaseMethods):
                     source.dispatchEvent(dragEndEvent);
                 """, source_element, target_element)
 
-
-    def get_ingredient_counter(self):
-        counter_element = self.wait_for_visibility((By.XPATH, ingredient_counter_locator))
-        return int(counter_element.text)
+    def get_ingredient_counter(self, locator):
+        try:
+            counter_element = self.wait_for_visibility((By.XPATH, locator))
+            return int(counter_element.text)
+        except ValueError:
+            return 0
 
     def click_make_order_btn(self):
         self.wait_for_clickable((By.XPATH, make_order_btn))

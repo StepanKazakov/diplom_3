@@ -1,7 +1,7 @@
 import pytest
 from utils.webdriver_factory import WebDriverFactory
 from url_data import base_url
-from utils.api_helper import create_user, unique_user_data
+from utils.api_helper import create_user, unique_user_data, set_random_ingredients
 
 
 @pytest.fixture(scope='function')
@@ -24,3 +24,9 @@ def test_user():
     user_data = unique_user_data()
     create_user(user_data)
     yield user_data
+
+
+@pytest.fixture(scope='function')
+def random_ingredients():
+    ingredients = set_random_ingredients()
+    return ingredients

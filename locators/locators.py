@@ -25,10 +25,12 @@ make_order_btn = './/button[text()="Оформить заказ"]'
 profile_orders_history = './/a[text()="История заказов"]'
 profile_logout_btn = './/button[text()="Выход"]'
 
+# твбы «Булки», «Соусы», «Начинки»
+buns_btn = './/span[text()="Булки"]'
+sauce_btn = './/span[text()="Соусы"]'
+filling_btn = './/span[text()="Начинки"]'
+
 # Конструктор бургера
-ingredient_bun_1 = './/img[@alt="Флюоресцентная булка R2-D3"]'
-ingredient_counter_locator = ('.//img[@alt="Флюоресцентная булка R2-D3"]/preceding-sibling::'
-                              'div/p[contains(@class, "counter_counter__num")]')
 opened_modal = './/section[contains(@class, "Modal_modal_opened")]'
 closed_modal = './/section[@class="Modal_modal__P3_V5"]'
 ingredient_details_title = './/h2[text()="Детали ингредиента"]'
@@ -39,7 +41,17 @@ order_id_title = './/p[@class="undefined text text_type_main-medium mb-15"]'
 animation_success_order = './/img[@alt="tick animation"]'
 
 
-# # Конструктор - кнопки «Булки», «Соусы», «Начинки»
-# cons_bread_btn = './/span[text()="Булки"]'
-# cons_sauce_btn = './/span[text()="Соусы"]'
-# cons_filling_btn = './/span[text()="Начинки"]'
+def ingredient_bun_locator(ingredient_name):
+    return f'.//img[@alt="{ingredient_name}"]'
+
+
+def ingredient_sauce_locator(ingredient_name):
+    return f'.//img[@alt="{ingredient_name}"]'
+
+
+def ingredient_main_locator(ingredient_name):
+    return f'.//img[@alt="{ingredient_name}"]'
+
+
+def ingredient_counter_locator(ingredient_name):
+    return f'.//img[@alt="{ingredient_name}"]/preceding-sibling::div/p[contains(@class, "counter_counter__num")]'
