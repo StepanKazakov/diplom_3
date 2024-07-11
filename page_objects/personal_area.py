@@ -2,10 +2,10 @@ import allure
 from selenium.webdriver.common.by import By
 
 from locators.locators import *
-from page_objects.base_page import BasePage
+from page_objects.base_methods import BaseMethods
 
 
-class LoginPage(BasePage):
+class PersonalArea(BaseMethods):
     def __init__(self, driver):
         super().__init__(driver)
 
@@ -13,7 +13,6 @@ class LoginPage(BasePage):
         self.click_element((By.XPATH, header_personal_area_btn))
 
     def click_password_recovery_link(self):
-        self.scroll_page_center()
         self.click_element((By.XPATH, password_recovery))
 
     def recovery_password(self, email):
@@ -29,3 +28,23 @@ class LoginPage(BasePage):
         element = self.wait_for_visibility(locator)
         with allure.step('проверка текущего статуса поля ввода пароля - активно'):
             return "input_status_active" in element.get_attribute("class")
+
+    def do_login(self, email, password):
+        self.input_text((By.XPATH, input_email), email)
+        self.input_text((By.XPATH, input_password), password)
+        self.click_element((By.XPATH, login_btn))
+        self.wait_for_clickable((By.XPATH, make_order_btn))
+
+    def check_profile_name(self):
+        with allure.step('проверка текущего имени в Профиле'):
+            current_name = self.wait_for_visibility((By.XPATH, input_name))
+            return current_name.get_attribute('value')
+
+    def click_orders_history_link(self):
+        self.click_element((By.XPATH, profile_orders_history))
+        return self.current_url
+
+    def click_logout(self):
+        self.click_element((By.XPATH, profile_logout_btn))
+        self.wait_for_clickable((By.XPATH, login_btn))
+        return self.current_url
