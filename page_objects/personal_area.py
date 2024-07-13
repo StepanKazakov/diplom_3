@@ -12,10 +12,13 @@ class PersonalArea(BaseMethods):
         super().__init__(driver)
 
     def click_personal_area_btn_in_header(self):
-        self.click_element((By.XPATH, header_personal_area_btn))
+        with allure.step('клик на Личный кабинет в хэдере'):
+            self.wait_for_clickable(header_personal_area_btn)
+            self.click_element((By.XPATH, header_personal_area_btn))
 
     def click_password_recovery_link(self):
-        self.click_element((By.XPATH, password_recovery))
+        with allure.step('клик на надпись Восстановить пароль'):
+            self.click_element((By.XPATH, password_recovery))
 
     def recovery_password(self, email):
         with allure.step('ввод почты и клик по кнопке «Восстановить»'):
@@ -27,23 +30,26 @@ class PersonalArea(BaseMethods):
             return self.check_password_input_is_active((By.XPATH, recovery_input_password))
 
     def check_password_input_is_active(self, locator):
-        element = self.wait_for_visibility(locator)
         with allure.step('проверка текущего статуса поля ввода пароля - активно'):
+            element = self.wait_for_visibility(locator)
             return "input_status_active" in element.get_attribute("class")
 
     def check_link_is_active(self):
-        element = self.wait_for_visibility((By.XPATH, profile_orders_history))
         with allure.step('проверка стиля меню "История заказов" - активно'):
+            element = self.wait_for_visibility((By.XPATH, profile_orders_history))
             return "Account_link_active__2opc9" in element.get_attribute("class")
 
     def do_login(self, email, password):
-        self.input_text((By.XPATH, input_email), email)
-        self.input_text((By.XPATH, input_password), password)
-        self.click_element((By.XPATH, login_btn))
-        self.wait_for_visibility((By.XPATH, constructor_page_title))
+        with allure.step('авторизация: вводим email, пароль и нажимаем кнопку "Войти", '
+                         'ожидаем при успешной авторизации редиректа на страницу конструктора'):
+            self.input_text((By.XPATH, input_email), email)
+            self.input_text((By.XPATH, input_password), password)
+            self.click_element((By.XPATH, login_btn))
+            self.wait_for_visibility((By.XPATH, constructor_page_title))
 
     def check_presence_login_button(self):
-        return self.wait_for_visibility((By.XPATH, login_btn))
+        with allure.step('проверка наличия в зоне видимости кнопки "Войти"'):
+            return self.wait_for_visibility((By.XPATH, login_btn))
 
     def check_profile_name(self):
         with allure.step('проверка текущего имени в Профиле'):
@@ -51,15 +57,18 @@ class PersonalArea(BaseMethods):
             return current_name.get_attribute('value')
 
     def click_orders_history_link(self):
-        self.click_element((By.XPATH, profile_orders_history))
-        return self.current_url
+        with allure.step('кликаем на меню История заказов в Профиле и возвращаем url'):
+            self.click_element((By.XPATH, profile_orders_history))
+            return self.current_url
 
     def click_logout(self):
-        self.click_element((By.XPATH, profile_logout_btn))
-        self.wait_for_clickable((By.XPATH, login_btn))
-        return self.current_url
+        with allure.step('кликаем на меню Выход в Профиле и возвращаем url'):
+            self.click_element((By.XPATH, profile_logout_btn))
+            self.wait_for_clickable((By.XPATH, login_btn))
+            return self.current_url
 
     def get_order_number_from_history(self):
-        self.wait_for_visibility((By.XPATH, order_feed_card))
-        order_number_element = self.get_text((By.XPATH, feed_order_number))
-        return order_number_element
+        with allure.step('получаем номер заказа в ленте Истории заказов'):
+            self.wait_for_visibility((By.XPATH, order_feed_card))
+            order_number_element = self.get_text((By.XPATH, feed_order_number))
+            return order_number_element

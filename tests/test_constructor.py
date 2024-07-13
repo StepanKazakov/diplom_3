@@ -45,7 +45,7 @@ class TestConstructor:
         with allure.step('Клик по ингредиенту'):
             self.page.click_sauce_ingredient(sauce)
         with allure.step('Закрытие всплывающего окна с деталями ингредиента'):
-            self.page.close_ingredient_details()
+            self.page.close_popup()
         with allure.step('Проверка, что всплывающее окно закрылось'):
             assert self.page.check_ingredient_details_closed()
 

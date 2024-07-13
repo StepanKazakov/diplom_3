@@ -44,7 +44,7 @@ class TestOrderFeed:
             self.constructor.drag_and_drop_ingredient_to_burger(buns)
             self.constructor.click_make_order_btn()
             order_id = self.constructor.get_order_id()
-            self.constructor.close_order_popup()
+            self.constructor.close_popup()
         with allure.step('Проверка, что заказ появился в разделе "В работе"'):
             self.order_feed.click_order_feed_link()
             order_number = self.order_feed.get_order_number_from_progress()
@@ -63,7 +63,7 @@ class TestOrderFeed:
         with allure.step('Создание заказа'):
             self.constructor.drag_and_drop_ingredient_to_burger(buns)
             self.constructor.click_make_order_btn()
-            self.constructor.close_order_popup()
+            self.constructor.close_popup()
         with allure.step('Получение номера заказа из Истории заказов'):
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.click_orders_history_link()
@@ -89,7 +89,7 @@ class TestOrderFeed:
             self.constructor.click_constructor_btn_in_header()
             self.constructor.drag_and_drop_ingredient_to_burger(buns)
             self.constructor.click_make_order_btn()
-            self.constructor.close_order_popup()
+            self.constructor.close_popup()
         with allure.step('Проверка увеличения счетчика "Выполнено за все время"'):
             self.order_feed.click_order_feed_link()
             updated_counter_all = self.order_feed.get_done_total_counters()
@@ -112,7 +112,7 @@ class TestOrderFeed:
             self.constructor.click_constructor_btn_in_header()
             self.constructor.drag_and_drop_ingredient_to_burger(buns)
             self.constructor.click_make_order_btn()
-            self.constructor.close_order_popup()
+            self.constructor.close_popup()
         with allure.step('Проверка увеличения счетчика "Выполнено за сегодня"'):
             self.order_feed.click_order_feed_link()
             updated_counter_daily = self.order_feed.get_done_today_counter()
