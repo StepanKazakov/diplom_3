@@ -15,7 +15,7 @@ class TestPersonalArea:
             self.personal.click_personal_area_btn_in_header()
         with allure.step('Переход на страницу восстановления пароля по кнопке «Восстановить пароль»'):
             self.personal.click_password_recovery_link()
-        with allure.step('Восстановление пароля и проверка статуса поля ввода нового пароля '
+        with allure.step('Ввод email и проверка статуса поля ввода нового пароля '
                          'после нажатия на иконку показа пароля'):
             is_active = self.personal.recovery_password(user_data["email"])
             assert is_active, "Поле должно быть активным после нажатия на иконку показа пароля"
@@ -45,6 +45,7 @@ class TestPersonalArea:
             self.personal.click_personal_area_btn_in_header()
             orders_history = self.personal.click_orders_history_link()
         with allure.step('Проверка редиректа на страницу истории заказов'):
+            assert self.personal.check_link_is_active()
             assert orders_history == "https://stellarburgers.nomoreparties.site/account/order-history"
 
     @allure.title('Выход из аккаунта в «Личном кабинете»')
@@ -59,4 +60,5 @@ class TestPersonalArea:
             self.personal.click_personal_area_btn_in_header()
             logout = self.personal.click_logout()
         with allure.step('Проверка редиректа на страницу авторизации'):
+            assert self.personal.check_presence_login_button()
             assert logout == "https://stellarburgers.nomoreparties.site/login"

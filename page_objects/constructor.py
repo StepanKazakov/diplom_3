@@ -1,8 +1,7 @@
 from selenium.common import TimeoutException
-from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 
-from locators.locators import *
+from locators.constructor_locators import *
 from page_objects.base_methods import BaseMethods
 
 
@@ -18,12 +17,12 @@ class Constructor(BaseMethods):
 
     def click_main_ingredient(self, locator):
         self.click_element((By.XPATH, filling_btn))
-        self.scroll_to_element((By.XPATH, locator))
+        self.scroll_to_element_by_locator((By.XPATH, locator))
         self.click_element((By.XPATH, locator))
 
     def click_sauce_ingredient(self, locator):
         self.click_element((By.XPATH, sauce_btn))
-        self.scroll_to_element((By.XPATH, locator))
+        self.scroll_to_element_by_locator((By.XPATH, locator))
         self.click_element((By.XPATH, locator))
 
     def get_ingredient_details(self):
@@ -86,9 +85,20 @@ class Constructor(BaseMethods):
     def click_make_order_btn(self):
         self.wait_for_clickable((By.XPATH, make_order_btn))
         self.click_element((By.XPATH, make_order_btn))
-        self.wait_for_clickable((By.XPATH, close_modal_button))
 
-    def check_order_id_title(self):
-        self.wait_for_visibility((By.XPATH, order_id_title))
+    def close_order_popup(self):
+        self.wait_for_clickable((By.XPATH, close_modal_button))
+        self.click_element((By.XPATH, close_modal_button))
+
+    def get_order_id_text(self):
+        self.wait_for_visibility((By.XPATH, order_id_text))
         self.wait_for_visibility((By.XPATH, animation_success_order))
-        return self.get_text((By.XPATH, order_id_title))
+        return self.get_text((By.XPATH, order_id_text))
+
+    def get_order_id(self):
+        try:
+            self.wait_for_visibility((By.XPATH, order_id_title))
+            order_number = self.wait_until_data_refresh((By.XPATH, order_id_title), '9999')
+            return order_number
+        except TimeoutException:
+            return None

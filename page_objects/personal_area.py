@@ -1,7 +1,9 @@
 import allure
 from selenium.webdriver.common.by import By
 
-from locators.locators import *
+from locators.profile_locators import *
+from locators.constructor_locators import constructor_page_title
+from locators.order_feed_locators import order_feed_card, feed_order_number
 from page_objects.base_methods import BaseMethods
 
 
@@ -29,11 +31,19 @@ class PersonalArea(BaseMethods):
         with allure.step('проверка текущего статуса поля ввода пароля - активно'):
             return "input_status_active" in element.get_attribute("class")
 
+    def check_link_is_active(self):
+        element = self.wait_for_visibility((By.XPATH, profile_orders_history))
+        with allure.step('проверка стиля меню "История заказов" - активно'):
+            return "Account_link_active__2opc9" in element.get_attribute("class")
+
     def do_login(self, email, password):
         self.input_text((By.XPATH, input_email), email)
         self.input_text((By.XPATH, input_password), password)
         self.click_element((By.XPATH, login_btn))
-        self.wait_for_clickable((By.XPATH, make_order_btn))
+        self.wait_for_visibility((By.XPATH, constructor_page_title))
+
+    def check_presence_login_button(self):
+        return self.wait_for_visibility((By.XPATH, login_btn))
 
     def check_profile_name(self):
         with allure.step('проверка текущего имени в Профиле'):
@@ -48,3 +58,8 @@ class PersonalArea(BaseMethods):
         self.click_element((By.XPATH, profile_logout_btn))
         self.wait_for_clickable((By.XPATH, login_btn))
         return self.current_url
+
+    def get_order_number_from_history(self):
+        self.wait_for_visibility((By.XPATH, order_feed_card))
+        order_number_element = self.get_text((By.XPATH, feed_order_number))
+        return order_number_element

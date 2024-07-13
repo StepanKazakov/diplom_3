@@ -3,10 +3,10 @@ import pytest
 
 from page_objects.constructor import Constructor
 from page_objects.personal_area import PersonalArea
-from locators.locators import (ingredient_main_locator,
-                               ingredient_counter_locator,
-                               ingredient_sauce_locator,
-                               ingredient_bun_locator)
+from locators.constructor_locators import (ingredient_main_locator,
+                                            ingredient_counter_locator,
+                                            ingredient_sauce_locator,
+                                            ingredient_bun_locator)
 
 
 @allure.feature('Тесты основного функционала - Конструктор заказа')
@@ -24,8 +24,7 @@ class TestConstructor:
         with allure.step('Переход из Личного кабинета в Конструктор по кнопке в хедере и проверка,'
                          'что пользователю доступна кнопка "Оформить заказ" в Конструкторе'):
             self.page.click_constructor_btn_in_header()
-            checkout_btn = self.page.check_presence_of_make_order_button()
-            assert checkout_btn is not None, "Кнопка 'Оформить заказ' не найдена на странице"
+            assert self.page.check_presence_of_make_order_button()
 
     @allure.title('Проверка появления всплывающего окна с деталями ингредиента')
     def test_ingredient_details_popup(self, random_ingredients):
@@ -48,8 +47,7 @@ class TestConstructor:
         with allure.step('Закрытие всплывающего окна с деталями ингредиента'):
             self.page.close_ingredient_details()
         with allure.step('Проверка, что всплывающее окно закрылось'):
-            modal_closed = self.page.check_ingredient_details_closed()
-            assert modal_closed is True, "Всплывающее окно не закрыто"
+            assert self.page.check_ingredient_details_closed()
 
     @allure.title('Проверка увеличения счетчика ингредиента при добавлении в заказ')
     def test_ingredient_counter_increase(self, random_ingredients):
@@ -61,7 +59,7 @@ class TestConstructor:
             self.page.drag_and_drop_ingredient_to_burger(bun_locator)
         with allure.step('Проверка увеличения счетчика ингредиента'):
             updated_counter = self.page.get_ingredient_counter(counter_locator)
-            assert updated_counter == initial_counter + 2, "Счетчик не соответствует ожидаемому значению"
+            assert updated_counter == initial_counter + 2
 
     @allure.title('Залогиненный пользователь может оформить заказ')
     def test_authorized_user_can_place_order(self, test_user, random_ingredients):
@@ -77,5 +75,5 @@ class TestConstructor:
         with allure.step('Оформление заказа'):
             self.page.click_make_order_btn()
         with allure.step('Проверка, что заказ оформлен'):
-            order_id_title = self.page.check_order_id_title()
-            assert order_id_title == "идентификатор заказа", "Не удалось найти идентификатор заказа"
+            order_id = self.page.get_order_id_text()
+            assert order_id == "идентификатор заказа"
