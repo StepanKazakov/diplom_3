@@ -12,5 +12,4 @@ class WebDriverFactory:
             driver = webdriver.Firefox()
         else:
             raise ValueError(f"Browser '{self.browser}' is not supported")
-        # driver.maximize_window()
         return driver
