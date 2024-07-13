@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from page_objects.personal_area import PersonalArea
+from url_data import *
 
 
 @allure.feature('Тесты по функционалу Личного кабинета')
@@ -18,7 +19,7 @@ class TestPersonalArea:
         with allure.step('Ввод email и проверка статуса поля ввода нового пароля '
                          'после нажатия на иконку показа пароля'):
             is_active = self.personal.recovery_password(user_data["email"])
-            assert is_active, "Поле должно быть активным после нажатия на иконку показа пароля"
+            assert is_active
 
     @allure.title('Вход в Профиль по клику на «Личный кабинет»')
     def test_edit_personal_area(self, test_user):
@@ -46,7 +47,7 @@ class TestPersonalArea:
             orders_history = self.personal.click_orders_history_link()
         with allure.step('Проверка редиректа на страницу истории заказов'):
             assert self.personal.check_link_is_active()
-            assert orders_history == "https://stellarburgers.nomoreparties.site/account/order-history"
+            assert orders_history == history_orders_page
 
     @allure.title('Выход из аккаунта в «Личном кабинете»')
     def test_logout(self, test_user):
@@ -61,4 +62,4 @@ class TestPersonalArea:
             logout = self.personal.click_logout()
         with allure.step('Проверка редиректа на страницу авторизации'):
             assert self.personal.check_presence_login_button()
-            assert logout == "https://stellarburgers.nomoreparties.site/login"
+            assert logout == login_page

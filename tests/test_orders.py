@@ -5,6 +5,7 @@ from page_objects.personal_area import PersonalArea
 from page_objects.order_feed import OrderFeed
 from page_objects.constructor import Constructor
 from locators.constructor_locators import ingredient_bun_locator
+from url_data import *
 
 
 @allure.feature('Проверка основного функционала ленты заказов')
@@ -16,7 +17,7 @@ class TestOrderFeed:
         with allure.step('Клик на «Лента заказов» и проверка заголовка страницы'):
             self.order_feed.click_order_feed_link()
             current_url, page_title = self.order_feed.get_order_feed_page_info()
-            assert current_url == "https://stellarburgers.nomoreparties.site/feed" and page_title == "Лента заказов"
+            assert current_url == order_feed and page_title == "Лента заказов"
 
     @allure.title('Проверка открытия всплывающего окна с деталями заказа')
     def test_order_details_popup(self):

@@ -1,6 +1,7 @@
 import requests
 import random
 import string
+from url_data import *
 
 
 def generate_random_email():
@@ -22,14 +23,14 @@ def unique_user_data():
 
 
 def create_user(payload):
-        response = requests.post("https://stellarburgers.nomoreparties.site/api/auth/register", json=payload)
-        response.raise_for_status()  # Raises stored HTTPError, if one occurred.
-        return response
+    response = requests.post(register_api, json=payload)
+    response.raise_for_status()
+    return response
 
 
 def set_random_ingredients():
     # Запрашиваем весь список ингредиентов и сортируем их по видам: булочки, соусы и начинки
-    response = requests.get(f"https://stellarburgers.nomoreparties.site/api/ingredients")
+    response = requests.get(ingredients_api)
     ingredients_data = response.json()["data"]
     buns = [ingredient["name"] for ingredient in ingredients_data if ingredient["type"] == "bun"]
     sauces = [ingredient["name"] for ingredient in ingredients_data if ingredient["type"] == "sauce"]
