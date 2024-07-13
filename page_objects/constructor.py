@@ -19,14 +19,14 @@ class Constructor(BaseMethods):
 
     def click_main_ingredient(self, ingredient_name):
         with allure.step('клик на таб "Начинки", скролл к выбранной начинке и клик на нее'):
-            main_locator = ingredient_main_locator(ingredient_name)
+            main_locator = ingredient_locator(ingredient_name)
             self.click_element(filling_btn)
             self.scroll_to_element_by_locator(main_locator)
             self.click_element(main_locator)
 
     def click_sauce_ingredient(self, ingredient_name):
         with allure.step('клик на таб "Соусы", скролл к выбранному соусу и клик на него'):
-            sauce_locator = ingredient_sauce_locator(ingredient_name)
+            sauce_locator = ingredient_locator(ingredient_name)
             self.click_element(sauce_btn)
             self.scroll_to_element_by_locator(sauce_locator)
             self.click_element(sauce_locator)
@@ -54,9 +54,9 @@ class Constructor(BaseMethods):
 
     def drag_and_drop_ingredient_to_burger(self, ingredient_name):
         with allure.step('перетаскивание ингредиента из ленты на шаблон заказа бургера'):
-            ingredient_locator = ingredient_bun_locator(ingredient_name)
+            buns_locator = ingredient_locator(ingredient_name)
             target_element = self.wait_for_visibility(burger_target_locator)
-            source_element = self.wait_for_clickable(ingredient_locator)
+            source_element = self.wait_for_clickable(buns_locator)
             self.driver.execute_script("""
                                     const source = arguments[0];
                                     const target = arguments[1];

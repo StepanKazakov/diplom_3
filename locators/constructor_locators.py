@@ -27,16 +27,8 @@ close_modal_button = (By.XPATH,'.//button[contains(@class, "Modal_modal__close_m
 burger_target_locator = (By.XPATH,'.//ul[contains(@class, "BurgerConstructor_basket__list")]')
 
 
-# Карточки ингредиентов (выбираются рандомно для каждого теста из api)
-def ingredient_bun_locator(ingredient_name):
-    return (By.XPATH, f'.//img[@alt="{ingredient_name}"]')
-
-
-def ingredient_sauce_locator(ingredient_name):
-    return (By.XPATH, f'.//img[@alt="{ingredient_name}"]')
-
-
-def ingredient_main_locator(ingredient_name):
+# Карточки ингредиентов (выбираются рандомно из api)
+def ingredient_locator(ingredient_name):
     return (By.XPATH, f'.//img[@alt="{ingredient_name}"]')
 
 
