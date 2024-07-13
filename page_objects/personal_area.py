@@ -1,8 +1,6 @@
 import allure
 
 from locators.profile_locators import *
-from locators.constructor_locators import constructor_page_title
-from locators.order_feed_locators import order_feed_card, feed_order_number
 from page_objects.base_methods import BaseMethods
 
 
@@ -39,12 +37,10 @@ class PersonalArea(BaseMethods):
             return "Account_link_active__2opc9" in element.get_attribute("class")
 
     def do_login(self, email, password):
-        with allure.step('авторизация: вводим email, пароль и нажимаем кнопку "Войти", '
-                         'ожидаем при успешной авторизации редиректа на страницу конструктора'):
+        with allure.step('авторизация: вводим email, пароль и нажимаем кнопку "Войти"'):
             self.input_text(input_email, email)
             self.input_text(input_password, password)
             self.click_element(login_btn)
-            self.wait_for_visibility(constructor_page_title)
 
     def check_presence_login_button(self):
         with allure.step('проверка наличия в зоне видимости кнопки "Войти"'):
@@ -68,6 +64,6 @@ class PersonalArea(BaseMethods):
 
     def get_order_number_from_history(self):
         with allure.step('получаем номер заказа в ленте Истории заказов'):
-            self.wait_for_visibility(order_feed_card)
-            order_number_element = self.get_text(feed_order_number)
+            self.wait_for_visibility(orders_history_card)
+            order_number_element = self.get_text(orders_history_order_number)
             return order_number_element

@@ -16,6 +16,9 @@ class BaseMethods:
     def wait_until_data_refresh(self, locator, data):
         return self.wait.until(lambda driver: self.get_text(locator) if data not in self.get_text(locator) else None)
 
+    def wait_until_text_appears(self, locator):
+        return self.wait.until(lambda driver: self.get_text(locator) if self.get_text(locator) != '' else None)
+
     def wait_for_clickable(self, locator):
         return self.wait.until(EC.element_to_be_clickable(locator))
 

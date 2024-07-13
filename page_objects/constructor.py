@@ -17,6 +17,10 @@ class Constructor(BaseMethods):
         with allure.step('проверка наличия в зоне видимости кнопки "Оформить заказ"'):
             return self.wait_for_visibility(make_order_btn)
 
+    def wait_load_constructor_page(self):
+        with allure.step('ожидание загрузки страницы Конструктор'):
+            self.wait_for_visibility(constructor_page_title)
+
     def click_main_ingredient(self, ingredient_name):
         with allure.step('клик на таб "Начинки", скролл к выбранной начинке и клик на нее'):
             main_locator = ingredient_locator(ingredient_name)
@@ -76,13 +80,17 @@ class Constructor(BaseMethods):
 
     def get_order_id_text(self):
         with allure.step('считываем текст в модальном окне подтверждения заказа'):
-            self.wait_for_visibility(animation_success_order)
-            self.wait_for_visibility(order_id_text)
-            return self.get_text(order_id_text)
+            try:
+                self.wait_for_visibility(animation_success_order)
+                order_text = self.wait_until_text_appears(order_id_text)
+                return order_text
+            except TimeoutException:
+                return None
 
     def get_order_id(self):
         with allure.step('получаем номер заказа в модальном окне подтверждения заказа'):
             try:
+                self.wait_until_text_appears(order_id_text)
                 self.wait_for_visibility(order_id_title)
                 order_number = self.wait_until_data_refresh(order_id_title, '9999')
                 return order_number

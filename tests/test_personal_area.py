@@ -2,6 +2,7 @@ import allure
 import pytest
 
 from page_objects.personal_area import PersonalArea
+from page_objects.constructor import Constructor
 from url_data import *
 
 
@@ -24,11 +25,13 @@ class TestPersonalArea:
     @allure.title('Вход в Профиль по клику на «Личный кабинет»')
     def test_edit_personal_area(self, test_user):
         self.personal = PersonalArea(self.driver)
+        self.constructor = Constructor(self.driver)
         user_data = test_user
         with allure.step('Авторизация по ссылке в хедере главной страницы'):
             self.personal.click_personal_area_btn_in_header()
         with allure.step('Заполнение логина, пароля и нажатие кнопки "Войти"'):
             self.personal.do_login(user_data["email"], user_data["password"])
+            self.constructor.wait_load_constructor_page()
         with allure.step('Открытие Профиля по ссылке "Личный кабинет"'):
             self.personal.click_personal_area_btn_in_header()
             current_name = self.personal.check_profile_name()
@@ -37,11 +40,13 @@ class TestPersonalArea:
     @allure.title('Переход в раздел «История заказов» по клику на «Личный кабинет»')
     def test_edit_orders_history(self, test_user):
         self.personal = PersonalArea(self.driver)
+        self.constructor = Constructor(self.driver)
         user_data = test_user
         with allure.step('Авторизация по ссылке в хедере главной страницы'):
             self.personal.click_personal_area_btn_in_header()
         with allure.step('Заполнение логина, пароля и нажатие кнопки "Войти"'):
             self.personal.do_login(user_data["email"], user_data["password"])
+            self.constructor.wait_load_constructor_page()
         with allure.step('Открытие Профиля и переход в раздел «История заказов»'):
             self.personal.click_personal_area_btn_in_header()
             orders_history = self.personal.click_orders_history_link()
@@ -52,11 +57,13 @@ class TestPersonalArea:
     @allure.title('Выход из аккаунта в «Личном кабинете»')
     def test_logout(self, test_user):
         self.personal = PersonalArea(self.driver)
+        self.constructor = Constructor(self.driver)
         user_data = test_user
         with allure.step('Авторизация по ссылке в хедере главной страницы'):
             self.personal.click_personal_area_btn_in_header()
         with allure.step('Заполнение логина, пароля и нажатие кнопки "Войти"'):
             self.personal.do_login(user_data["email"], user_data["password"])
+            self.constructor.wait_load_constructor_page()
         with allure.step('Открытие Профиля и клик по кнопке "Выход"'):
             self.personal.click_personal_area_btn_in_header()
             logout = self.personal.click_logout()

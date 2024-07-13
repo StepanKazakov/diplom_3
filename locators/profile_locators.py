@@ -8,6 +8,10 @@ header_personal_area_btn = (By.XPATH, './/p[text()="Личный Кабинет"
 profile_orders_history = (By.XPATH, './/a[text()="История заказов"]')
 profile_logout_btn = (By.XPATH, './/button[text()="Выход"]')
 
+# История заказов пользователя
+orders_history_card = (By.XPATH, './/li[contains(@class, "OrderHistory_listItem")]')
+orders_history_order_number = (By.XPATH, './/p[@class="text text_type_digits-default"]')
+
 # Авторизация - кнопка "Войти"
 login_btn = (By.XPATH, './/button[text()="Войти"]')
 

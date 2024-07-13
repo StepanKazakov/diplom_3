@@ -40,6 +40,7 @@ class TestOrderFeed:
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
         with allure.step('Создание нового заказа'):
+            self.constructor.wait_load_constructor_page()
             self.constructor.drag_and_drop_ingredient_to_burger(bun_name)
             self.constructor.click_make_order_btn()
             order_id = self.constructor.get_order_id()
@@ -60,6 +61,7 @@ class TestOrderFeed:
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
         with allure.step('Создание заказа'):
+            self.constructor.wait_load_constructor_page()
             self.constructor.drag_and_drop_ingredient_to_burger(bun_name)
             self.constructor.click_make_order_btn()
             self.constructor.close_popup()
@@ -82,6 +84,7 @@ class TestOrderFeed:
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
         with allure.step('Запоминаем начальное значение счетчика "Выполнено за все время"'):
+            self.constructor.wait_load_constructor_page()
             self.order_feed.click_order_feed_link()
             initial_counter_all = self.order_feed.get_done_total_counters()
         with allure.step('Создание нового заказа'):
@@ -105,6 +108,7 @@ class TestOrderFeed:
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
         with allure.step('Запоминаем начальное значение счетчика "Выполнено за сегодня"'):
+            self.constructor.wait_load_constructor_page()
             self.order_feed.click_order_feed_link()
             initial_counter_daily = self.order_feed.get_done_today_counter()
         with allure.step('Создание нового заказа'):
