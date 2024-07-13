@@ -18,14 +18,14 @@ class OrderFeed(BaseMethods):
     def get_order_feed_page_info(self):
         with allure.step('получаем урл и заголовок страницы Лента заказов'):
             self.wait_for_visibility(order_feed_page_title)
-            current_url = self.driver.current_url
+            current_url = self.current_url
             page_title = self.get_text(order_feed_page_title)
             return current_url, page_title
 
     def click_random_order_card(self):
         with allure.step('кликаем на случайно выбранную карточку в Ленте заказов'):
             self.wait_for_visibility(done_today_counter)
-            cards = self.driver.find_elements(*order_feed_card)
+            cards = self.find_elements(order_feed_card)
             random_card = random.choice(cards)
             self.scroll_to_element_by_element(random_card)
             random_card.click()
@@ -48,7 +48,7 @@ class OrderFeed(BaseMethods):
     def is_order_in_feed(self, order_number):
         with allure.step('проверяем наличие конкретного заказа в ленте заказов по номеру'):
             self.wait_for_visibility(feed_order_number)
-            order_numbers = self.driver.find_elements(*feed_order_number)
+            order_numbers = self.find_elements(feed_order_number)
             for number in order_numbers:
                 if number.text == order_number:
                     return True

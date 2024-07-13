@@ -39,6 +39,40 @@ class BaseMethods:
     def scroll_to_element_by_element(self, element):
         self.driver.execute_script("arguments[0].scrollIntoView(true);", element)
 
+    def find_elements(self, locator):
+        return self.driver.find_elements(*locator)
+
+    def drag_and_drop(self, source_element, target_element):
+        self.driver.execute_script("""
+                                            const source = arguments[0];
+                                            const target = arguments[1];
+
+                                            const dataTransfer = new DataTransfer();
+                                            const dragStartEvent = new DragEvent('dragstart', {
+                                                bubbles: true,
+                                                cancelable: true,
+                                                dataTransfer: dataTransfer,
+                                            });
+
+                                            source.dispatchEvent(dragStartEvent);
+
+                                            const dropEvent = new DragEvent('drop', {
+                                                bubbles: true,
+                                                cancelable: true,
+                                                dataTransfer: dataTransfer,
+                                            });
+
+                                            target.dispatchEvent(dropEvent);
+
+                                            const dragEndEvent = new DragEvent('dragend', {
+                                                bubbles: true,
+                                                cancelable: true,
+                                                dataTransfer: dataTransfer,
+                                            });
+
+                                            source.dispatchEvent(dragEndEvent);
+                                        """, source_element, target_element)
+
     @property
     def current_url(self):
         return self.driver.current_url

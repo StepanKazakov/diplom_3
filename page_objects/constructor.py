@@ -57,35 +57,7 @@ class Constructor(BaseMethods):
             buns_locator = ingredient_locator(ingredient_name)
             target_element = self.wait_for_visibility(burger_target_locator)
             source_element = self.wait_for_clickable(buns_locator)
-            self.driver.execute_script("""
-                                    const source = arguments[0];
-                                    const target = arguments[1];
-
-                                    const dataTransfer = new DataTransfer();
-                                    const dragStartEvent = new DragEvent('dragstart', {
-                                        bubbles: true,
-                                        cancelable: true,
-                                        dataTransfer: dataTransfer,
-                                    });
-
-                                    source.dispatchEvent(dragStartEvent);
-
-                                    const dropEvent = new DragEvent('drop', {
-                                        bubbles: true,
-                                        cancelable: true,
-                                        dataTransfer: dataTransfer,
-                                    });
-
-                                    target.dispatchEvent(dropEvent);
-
-                                    const dragEndEvent = new DragEvent('dragend', {
-                                        bubbles: true,
-                                        cancelable: true,
-                                        dataTransfer: dataTransfer,
-                                    });
-
-                                    source.dispatchEvent(dragEndEvent);
-                                """, source_element, target_element)
+            self.drag_and_drop(source_element, target_element)
 
     def get_ingredient_counter(self, ingredient_name):
         with allure.step('получаем выбранное количество ингредиента в карточке'):
