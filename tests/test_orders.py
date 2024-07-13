@@ -4,7 +4,6 @@ import allure
 from page_objects.personal_area import PersonalArea
 from page_objects.order_feed import OrderFeed
 from page_objects.constructor import Constructor
-from locators.constructor_locators import ingredient_bun_locator
 from url_data import *
 
 
@@ -36,12 +35,12 @@ class TestOrderFeed:
         self.order_feed = OrderFeed(self.driver)
         self.constructor = Constructor(self.driver)
         user_data = test_user
-        buns = ingredient_bun_locator(random_ingredients["bun"])
+        bun_name = random_ingredients["bun"]
         with allure.step('Авторизация и вход в Личный кабинет'):
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
         with allure.step('Создание нового заказа'):
-            self.constructor.drag_and_drop_ingredient_to_burger(buns)
+            self.constructor.drag_and_drop_ingredient_to_burger(bun_name)
             self.constructor.click_make_order_btn()
             order_id = self.constructor.get_order_id()
             self.constructor.close_popup()
@@ -56,12 +55,12 @@ class TestOrderFeed:
         self.order_feed = OrderFeed(self.driver)
         self.constructor = Constructor(self.driver)
         user_data = test_user
-        buns = ingredient_bun_locator(random_ingredients["bun"])
+        bun_name = random_ingredients["bun"]
         with allure.step('Авторизация и вход в Личный кабинет'):
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
         with allure.step('Создание заказа'):
-            self.constructor.drag_and_drop_ingredient_to_burger(buns)
+            self.constructor.drag_and_drop_ingredient_to_burger(bun_name)
             self.constructor.click_make_order_btn()
             self.constructor.close_popup()
         with allure.step('Получение номера заказа из Истории заказов'):
@@ -78,7 +77,7 @@ class TestOrderFeed:
         self.order_feed = OrderFeed(self.driver)
         self.constructor = Constructor(self.driver)
         user_data = test_user
-        buns = ingredient_bun_locator(random_ingredients["bun"])
+        bun_name = random_ingredients["bun"]
         with allure.step('Авторизация и вход в Личный кабинет'):
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
@@ -87,7 +86,7 @@ class TestOrderFeed:
             initial_counter_all = self.order_feed.get_done_total_counters()
         with allure.step('Создание нового заказа'):
             self.constructor.click_constructor_btn_in_header()
-            self.constructor.drag_and_drop_ingredient_to_burger(buns)
+            self.constructor.drag_and_drop_ingredient_to_burger(bun_name)
             self.constructor.click_make_order_btn()
             self.constructor.close_popup()
         with allure.step('Проверка увеличения счетчика "Выполнено за все время"'):
@@ -101,7 +100,7 @@ class TestOrderFeed:
         self.order_feed = OrderFeed(self.driver)
         self.constructor = Constructor(self.driver)
         user_data = test_user
-        buns = ingredient_bun_locator(random_ingredients["bun"])
+        bun_name = random_ingredients["bun"]
         with allure.step('Авторизация и вход в Личный кабинет'):
             self.personal_area.click_personal_area_btn_in_header()
             self.personal_area.do_login(user_data["email"], user_data["password"])
@@ -110,7 +109,7 @@ class TestOrderFeed:
             initial_counter_daily = self.order_feed.get_done_today_counter()
         with allure.step('Создание нового заказа'):
             self.constructor.click_constructor_btn_in_header()
-            self.constructor.drag_and_drop_ingredient_to_burger(buns)
+            self.constructor.drag_and_drop_ingredient_to_burger(bun_name)
             self.constructor.click_make_order_btn()
             self.constructor.close_popup()
         with allure.step('Проверка увеличения счетчика "Выполнено за сегодня"'):

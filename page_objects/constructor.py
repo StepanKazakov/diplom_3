@@ -17,17 +17,19 @@ class Constructor(BaseMethods):
         with allure.step('проверка наличия в зоне видимости кнопки "Оформить заказ"'):
             return self.wait_for_visibility(make_order_btn)
 
-    def click_main_ingredient(self, locator):
-        with allure.step('клик на таб "Начинки"'):
+    def click_main_ingredient(self, ingredient_name):
+        with allure.step('клик на таб "Начинки", скролл к выбранной начинке и клик на нее'):
+            main_locator = ingredient_main_locator(ingredient_name)
             self.click_element(filling_btn)
-            self.scroll_to_element_by_locator(locator)
-            self.click_element(locator)
+            self.scroll_to_element_by_locator(main_locator)
+            self.click_element(main_locator)
 
-    def click_sauce_ingredient(self, locator):
-        with allure.step('клик на таб "Соусы"'):
+    def click_sauce_ingredient(self, ingredient_name):
+        with allure.step('клик на таб "Соусы", скролл к выбранному соусу и клик на него'):
+            sauce_locator = ingredient_sauce_locator(ingredient_name)
             self.click_element(sauce_btn)
-            self.scroll_to_element_by_locator(locator)
-            self.click_element(locator)
+            self.scroll_to_element_by_locator(sauce_locator)
+            self.click_element(sauce_locator)
 
     def get_ingredient_details(self):
         with allure.step('получаем название ингредиента во всплывающем окне "Детали ингредиента"'):
@@ -50,44 +52,46 @@ class Constructor(BaseMethods):
             except TimeoutException:
                 return False
 
-    def drag_and_drop_ingredient_to_burger(self, locator):
+    def drag_and_drop_ingredient_to_burger(self, ingredient_name):
         with allure.step('перетаскивание ингредиента из ленты на шаблон заказа бургера'):
-            source_element = self.wait_for_clickable(locator)
+            ingredient_locator = ingredient_bun_locator(ingredient_name)
             target_element = self.wait_for_visibility(burger_target_locator)
+            source_element = self.wait_for_clickable(ingredient_locator)
             self.driver.execute_script("""
-                        const source = arguments[0];
-                        const target = arguments[1];
-    
-                        const dataTransfer = new DataTransfer();
-                        const dragStartEvent = new DragEvent('dragstart', {
-                            bubbles: true,
-                            cancelable: true,
-                            dataTransfer: dataTransfer,
-                        });
-    
-                        source.dispatchEvent(dragStartEvent);
-    
-                        const dropEvent = new DragEvent('drop', {
-                            bubbles: true,
-                            cancelable: true,
-                            dataTransfer: dataTransfer,
-                        });
-    
-                        target.dispatchEvent(dropEvent);
-    
-                        const dragEndEvent = new DragEvent('dragend', {
-                            bubbles: true,
-                            cancelable: true,
-                            dataTransfer: dataTransfer,
-                        });
-    
-                        source.dispatchEvent(dragEndEvent);
-                    """, source_element, target_element)
+                                    const source = arguments[0];
+                                    const target = arguments[1];
 
-    def get_ingredient_counter(self, locator):
+                                    const dataTransfer = new DataTransfer();
+                                    const dragStartEvent = new DragEvent('dragstart', {
+                                        bubbles: true,
+                                        cancelable: true,
+                                        dataTransfer: dataTransfer,
+                                    });
+
+                                    source.dispatchEvent(dragStartEvent);
+
+                                    const dropEvent = new DragEvent('drop', {
+                                        bubbles: true,
+                                        cancelable: true,
+                                        dataTransfer: dataTransfer,
+                                    });
+
+                                    target.dispatchEvent(dropEvent);
+
+                                    const dragEndEvent = new DragEvent('dragend', {
+                                        bubbles: true,
+                                        cancelable: true,
+                                        dataTransfer: dataTransfer,
+                                    });
+
+                                    source.dispatchEvent(dragEndEvent);
+                                """, source_element, target_element)
+
+    def get_ingredient_counter(self, ingredient_name):
         with allure.step('получаем выбранное количество ингредиента в карточке'):
+            counter_locator = ingredient_counter_locator(ingredient_name)
             try:
-                counter_element = self.wait_for_visibility(locator)
+                counter_element = self.wait_for_visibility(counter_locator)
                 return int(counter_element.text)
             except ValueError:
                 return 0
@@ -96,6 +100,7 @@ class Constructor(BaseMethods):
         with allure.step('кликаем на кнопку "Оформить заказ"'):
             self.wait_for_clickable(make_order_btn)
             self.click_element(make_order_btn)
+            self.wait_for_visibility(opened_modal)
 
     def get_order_id_text(self):
         with allure.step('считываем текст в модальном окне подтверждения заказа'):

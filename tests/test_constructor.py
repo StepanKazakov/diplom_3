@@ -3,10 +3,6 @@ import pytest
 
 from page_objects.constructor import Constructor
 from page_objects.personal_area import PersonalArea
-from locators.constructor_locators import (ingredient_main_locator,
-                                            ingredient_counter_locator,
-                                            ingredient_sauce_locator,
-                                            ingredient_bun_locator)
 
 
 @allure.feature('Тесты основного функционала - Конструктор заказа')
@@ -29,10 +25,9 @@ class TestConstructor:
     @allure.title('Проверка появления всплывающего окна с деталями ингредиента')
     def test_ingredient_details_popup(self, random_ingredients):
         main_name = random_ingredients["main"]
-        main_locator = ingredient_main_locator(main_name)
         self.page = Constructor(self.driver)
         with allure.step('Клик по ингредиенту'):
-            self.page.click_main_ingredient(main_locator)
+            self.page.click_main_ingredient(main_name)
         with allure.step('Проверка, что появилось всплывающее окно с деталями ингредиента'):
             title, name = self.page.get_ingredient_details()
             assert title == "Детали ингредиента" and name == main_name
@@ -40,7 +35,6 @@ class TestConstructor:
     @allure.title('Закрытие всплывающего окна с деталями ингредиента')
     def test_close_ingredient_details_popup(self, random_ingredients):
         sauce = random_ingredients["sauce"]
-        sauce = ingredient_sauce_locator(sauce)
         self.page = Constructor(self.driver)
         with allure.step('Клик по ингредиенту'):
             self.page.click_sauce_ingredient(sauce)
@@ -51,27 +45,26 @@ class TestConstructor:
 
     @allure.title('Проверка увеличения счетчика ингредиента при добавлении в заказ')
     def test_ingredient_counter_increase(self, random_ingredients):
-        bun_locator = ingredient_bun_locator(random_ingredients["bun"])
-        counter_locator = ingredient_counter_locator(random_ingredients["bun"])
+        bun_name = random_ingredients["bun"]
         self.page = Constructor(self.driver)
-        initial_counter = self.page.get_ingredient_counter(counter_locator)
+        initial_counter = self.page.get_ingredient_counter(bun_name)
         with allure.step('Добавление ингредиента в заказ'):
-            self.page.drag_and_drop_ingredient_to_burger(bun_locator)
+            self.page.drag_and_drop_ingredient_to_burger(bun_name)
         with allure.step('Проверка увеличения счетчика ингредиента'):
-            updated_counter = self.page.get_ingredient_counter(counter_locator)
+            updated_counter = self.page.get_ingredient_counter(bun_name)
             assert updated_counter == initial_counter + 2
 
     @allure.title('Залогиненный пользователь может оформить заказ')
     def test_authorized_user_can_place_order(self, test_user, random_ingredients):
+        bun_name = random_ingredients["bun"]
         self.page = Constructor(self.driver)
         self.personal = PersonalArea(self.driver)
         user_data = test_user
-        bun_locator = ingredient_bun_locator(random_ingredients["bun"])
         with allure.step('Авторизация и вход в Личный кабинет'):
             self.personal.click_personal_area_btn_in_header()
             self.personal.do_login(user_data["email"], user_data["password"])
         with allure.step('Добавление ингредиента в заказ'):
-            self.page.drag_and_drop_ingredient_to_burger(bun_locator)
+            self.page.drag_and_drop_ingredient_to_burger(bun_name)
         with allure.step('Оформление заказа'):
             self.page.click_make_order_btn()
         with allure.step('Проверка, что заказ оформлен'):
